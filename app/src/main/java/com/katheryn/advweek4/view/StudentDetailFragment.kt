@@ -17,10 +17,15 @@ import kotlinx.android.synthetic.main.student_list_item.txtID
 import kotlinx.android.synthetic.main.student_list_item.txtName
 
 class StudentDetailFragment : Fragment() {
-    private lateinit var viewModel: ListViewModel
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    private lateinit var viewModel: DetailViewModel
 
+    fun observeViewModel(){
+        viewModel.studentLD.observe(viewLifecycleOwner, Observer {
+            txtID.setText(it.id)
+            txtName.setText(it.name)
+            txtBod.setText(it.bod)
+            txtPhone.setText(it.phone)
+        })
     }
 
     override fun onCreateView(
@@ -33,27 +38,12 @@ class StudentDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if(arguments != null){
-            val id = StudentDetailFragmentArgs.fromBundle(requireArguments()).id
-            viewModel = ViewModelProvider(this).get(DetailViewModel::class.java)
-            viewModel.fetch(id)
 
-            observeViewModel()
-        }
-        else{
-            Toast.makeText(view.context,"Student Not Found!",Toast.LENGTH_LONG).show()
-        }
+        viewModel = ViewModelProvider(this).get(DetailViewModel::class.java)
+        viewModel.fetch()
+
+        observeViewModel()
     }
 
-    fun observeViewModel(){
-        viewModel.studentsLD.observe(viewLifecycleOwner, Observer {
-            txtID.setText(it.id)
-            txtName.setText(it.name)
-            txtBod.setText(it.bod)
-            txtPhone.setText(it.phone)
-            imageView2.loadImage(it.photoUrl.toString(),progressBar2)
 
-
-        })
-    }
 }
