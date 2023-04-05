@@ -3,9 +3,12 @@ package com.katheryn.advweek4.view
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.ProgressBar
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.katheryn.advweek4.R
+import com.katheryn.advweek4.Util.loadImage
 import com.katheryn.advweek4.model.Student
 import kotlinx.android.synthetic.main.student_list_item.view.*
 
@@ -24,9 +27,13 @@ class StudentListAdapter(val studentList:ArrayList<Student>)
         holder.view.txtName.text = studentList[position].name
 
         holder.view.btnDetail.setOnClickListener {
-            val action = StudentListFragmentDirections.actionStudentDetail()
+            val action = StudentListFragmentDirections.actionStudentDetail(studentList[position].id!!)
             Navigation.findNavController(it).navigate(action)
         }
+
+        var imageView = holder.view.findViewById<ImageView>(R.id.imageView)
+        var progressBar = holder.view.findViewById<ProgressBar>(R.id.progressBar)
+        imageView.loadImage(studentList[position].photoUrl, progressBar)
     }
 
     override fun getItemCount(): Int {
