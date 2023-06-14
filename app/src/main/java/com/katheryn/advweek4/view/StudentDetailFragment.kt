@@ -5,11 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.katheryn.advweek4.R
-import com.katheryn.advweek4.Util.loadImage
+import com.katheryn.advweek4.databinding.FragmentStudentDetailBinding
 import com.katheryn.advweek4.viewmodel.DetailViewModel
 import com.katheryn.advweek4.viewmodel.ListViewModel
 import kotlinx.android.synthetic.main.fragment_student_detail.*
@@ -19,15 +19,19 @@ import kotlinx.android.synthetic.main.student_list_item.txtName
 
 class StudentDetailFragment : Fragment() {
     private lateinit var viewModel: DetailViewModel
+    private lateinit var dataBinding: FragmentStudentDetailBinding
 
     fun observeViewModel(){
         viewModel.studentLD.observe(viewLifecycleOwner, Observer {
-            imageView2.loadImage(it.photoUrl, progressBar2)
-            txtID.setText(it.id)
-            txtName.setText(it.name)
-            txtBod.setText(it.bod)
-            txtPhone.setText(it.phone)
+            dataBinding.student = it
         })
+//        viewModel.studentLD.observe(viewLifecycleOwner, Observer {
+//            imageView2.loadImage(it.photoUrl, progressBar2)
+//            txtID.setText(it.id)
+//            txtName.setText(it.name)
+//            txtBod.setText(it.bod)
+//            txtPhone.setText(it.phone)
+//        })
     }
 
     override fun onCreateView(
@@ -35,7 +39,9 @@ class StudentDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_student_detail, container, false)
+//        return inflater.inflate(R.layout.fragment_student_detail, container, false)
+        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_student_detail, container, false)
+        return dataBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
